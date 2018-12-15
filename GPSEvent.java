@@ -11,7 +11,7 @@ public class GPSEvent
    private  String   serialNumber;
    private  String   command;
    private  Date     timeStamp;
-   private  String   status; //Effective mark of data, ‘A’ stand of effective, ‘V’ stand of invalid.
+   private  String   status; //Effective mark of data, 'A' stand of effective, 'V' stand of invalid.
    private  String   latitude; //DDFF.FFFF, DD : Degree(00 ~ 90), FF.FFFF : minute (00.0000 ~ 59.9999), keep four decimal places.
    private  String   latitudeCardinal; //N:north, S:south
    private  String   latitudeDegree; // 00 ~ 90
