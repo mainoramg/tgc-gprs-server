@@ -21,19 +21,35 @@ class GPSParser
             }
             for( int i=0; i<al.size(); i++ )
             {
-               HashMap  hm    =  (HashMap) al.get(i);
-               String   id    =  (String) hm.get( "id"   );
-                        id    =  id==null?"":id.toString();
-               String   data  =  (String) hm.get( "data" );
-                        data  =  data==null?"":data.toString();
-               GPSEvent event =  new GPSEvent( data );
-               if( !event.getStatus().equals( "E" ) && !event.getStatus().equals( "" ) )
+               HashMap  hm          =  (HashMap) al.get(i);
+               String   id          =  (String) hm.get( "id"   );
+                        id          =  id==null?"":id.toString();
+               String   data        =  (String) hm.get( "data" );
+                        data        =  data==null?"":data.toString();
+               if(   data != null && 
+                     data.length() >= 2 && 
+                     data.substring( 0, 1 ).equals("*") && 
+                     data.substring( data.length()-1, data.length() ).equals( "#" ) )
                {
-                  System.out.println( new Timestamp( System.currentTimeMillis() ) + ": " + event.getQueryToSaveIntoDB( id ) );
-                  DB.executeSQL( event.getQueryToSaveIntoDB( id )    );
+                  String[] dataArray   =  data.split("#");
+                  for( int j = 0 ; j < dataArray.length ; j++ )
+                  {
+                     GPSEvent event =  new GPSEvent( dataArray[j]+"#" );
+                     if( !event.getStatus().equals( "E" ) && !event.getStatus().equals( "" ) )
+                     {
+                        System.out.println( new Timestamp( System.currentTimeMillis() ) + ": " + event.getQueryToSaveIntoDB( id ) );
+                        DB.executeSQL( event.getQueryToSaveIntoDB( id )    );
+                     }
+                     else
+                     {
+                        System.out.println( new Timestamp( System.currentTimeMillis() ) + ": " + event.getQueryToRemoveFromDB( id ) );
+                        DB.executeSQL( event.getQueryToRemoveFromDB( id )  );
+                     }
+                  }
                }
                else
                {
+                  GPSEvent event =  new GPSEvent( data );
                   System.out.println( new Timestamp( System.currentTimeMillis() ) + ": " + event.getQueryToRemoveFromDB( id ) );
                   DB.executeSQL( event.getQueryToRemoveFromDB( id )  );
                }
