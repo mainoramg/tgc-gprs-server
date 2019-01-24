@@ -16,7 +16,7 @@ class GPSParser
             if( al.size()==0 )
             {
                System.out.println( new Timestamp( System.currentTimeMillis() ) + ": NO DATA ..." );
-               try { Thread.sleep(20*1000); } catch( Exception e2 ) {}
+               try { Thread.sleep(4*1000); } catch( Exception e2 ) {}
                continue;
             }
             for( int i=0; i<al.size(); i++ )
